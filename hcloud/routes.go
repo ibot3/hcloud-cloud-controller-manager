@@ -344,6 +344,8 @@ func (r *routes) getRootServerRoutes(ctx context.Context) []*cloudprovider.Route
 
 func (r *routes) isRootServer(ctx context.Context, nodeName types.NodeName, op string) bool {
 	node, err := r.k8sClientSet.CoreV1().Nodes().Get(ctx, string(nodeName), metav1.GetOptions{})
+	klog.InfoS(fmt.Sprintf("checking if node %v is a root server", nodeName))
+
 	if err != nil {
 		klog.Warningf("failed to retrieve node info for %v: %v op=%v\n", nodeName, err, op)
 		return false

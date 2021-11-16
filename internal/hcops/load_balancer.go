@@ -509,6 +509,11 @@ func (l *LoadBalancerOps) ReconcileHCLBTargets(
 
 	// Extract HC server IDs of all K8S nodes assigned to the K8S cluster.
 	for _, node := range nodes {
+		isRootServer, err := annotation.HasRootServerLabel(node)
+		if err != nil || isRootServer {
+			klog.InfoS(fmt.Sprintf("node %v is a root server, skipping...", node.Name))
+			continue
+		}
 		id, err := providerIDToServerID(node.Spec.ProviderID)
 		if err != nil {
 			return changed, fmt.Errorf("%s: %w", op, err)

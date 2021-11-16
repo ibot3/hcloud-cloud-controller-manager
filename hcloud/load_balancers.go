@@ -99,8 +99,14 @@ func (l *loadBalancers) EnsureLoadBalancer(
 
 	nodeNames := make([]string, len(nodes))
 	for i, n := range nodes {
+		isRootServer, err := annotation.HasRootServerLabel(n)
+		if err != nil || isRootServer {
+			klog.InfoS(fmt.Sprintf("node %v is a root server, skipping...", n.Name))
+			continue
+		}
 		nodeNames[i] = n.Name
 	}
+
 	klog.InfoS("ensure Load Balancer", "op", op, "service", svc.Name, "nodes", nodeNames)
 
 	lb, err = l.lbOps.GetByK8SServiceUID(ctx, svc)
@@ -235,8 +241,14 @@ func (l *loadBalancers) UpdateLoadBalancer(
 
 	nodeNames := make([]string, len(nodes))
 	for i, n := range nodes {
+		isRootServer, err := annotation.HasRootServerLabel(n)
+		if err != nil || isRootServer {
+			klog.InfoS(fmt.Sprintf("node %v is a root server, skipping...", n.Name))
+			continue
+		}
 		nodeNames[i] = n.Name
 	}
+
 	klog.InfoS("update Load Balancer", "op", op, "service", svc.Name, "nodes", nodeNames)
 
 	lb, err = l.lbOps.GetByK8SServiceUID(ctx, svc)

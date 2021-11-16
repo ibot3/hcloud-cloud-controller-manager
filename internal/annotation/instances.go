@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -22,5 +23,6 @@ func HasRootServerLabel(node *corev1.Node) (bool, error) {
 		return false, fmt.Errorf("node %s has invalid label '%s': %v", node.Name, instanceIsRootServer, err)
 	}
 
+	klog.InfoS(fmt.Sprintf("node %s has %s label", node.Name, instanceIsRootServer))
 	return boolValue, nil
 }
