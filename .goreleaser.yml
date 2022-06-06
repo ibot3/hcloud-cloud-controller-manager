@@ -29,8 +29,8 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "hetznercloud/hcloud-cloud-controller-manager:latest"
-      - "hetznercloud/hcloud-cloud-controller-manager:{{ if not .IsSnapshot }}v{{ end }}{{ .Version }}"
+      - "ghcr.io/ibot3/hcloud-cloud-controller-manager:latest"
+      - "ghcr.io/ibot3/hcloud-cloud-controller-manager:{{ if not .IsSnapshot }}v{{ end }}{{ .Version }}"
     dockerfile: Dockerfile
     use_buildx: true
     build_flag_templates:
